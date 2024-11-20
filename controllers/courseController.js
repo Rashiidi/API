@@ -44,4 +44,39 @@ module.exports = {
             next(error);
         }
     },
+
+    updateCourse: async (req, res, next) => {
+        try {
+            let id = req.params.course_id;
+    
+            // Update course
+            const [updatedRows] = await Course.update(req.body, { where: { course_id: id } });
+    
+            if (updatedRows === 0) {
+                throw createError(404, "Course does not exist");
+            }
+    
+            res.status(200).send(`Course with ID ${id} updated successfully`);
+        } catch (error) {
+            next(error);
+        }
+    },
+    
+    deleteCourse: async (req, res, next) => {
+        try {
+            let id = req.params.course_id;
+    
+            // Delete course
+            const deletedRows = await Course.destroy({ where: { course_id: id } });
+    
+            if (deletedRows === 0) {
+                throw createError(404, "Course does not exist");
+            }
+    
+            res.status(200).send(`Course with ID ${id} deleted successfully`);
+        } catch (error) {
+            next(error);
+        }
+    }
+    
 };
